@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Train</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <form>
+        <h4>Train Name</h4>
+        <input type="text" id="add-train-name">
+        <h4>Destination</h4>
+        <input type="text" id="add-destination">
+        <h4>First Train Time</h4>
+        <input type="text" id="add-first-train">
+        <h4>Frequency (min)</h4>
+        <input type="text" id="add-frequency">
+        <br>
+        <br>
+        <input type="submit" id="submit">
+    </form>
+    <table id="train-table">
+        <tr>        
+            <th>Train Name</th>
+            <th>Destination</th>
+            <th>Frequency (min)</th>
+            <th>Next Arrival</th>
+            <th>Minutes Away</th>
+        </tr>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+</body>
+</html>
