@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 
 // Initialize Firebase
@@ -13,6 +12,7 @@ var config = {
     firebase.initializeApp(config);
     let database = firebase.database();
     readFromFirebase();
+
 // Variables used for user input
 let trainNameInputDiv = $("#add-train-name");
 let destinationInputDiv = $("#add-destination");;
@@ -28,6 +28,7 @@ let frequencyVal = "";
 let nextArrival = "";
 let nextArrivalMin = "";
 
+// Used to manipulate DOM and create rows for each entry
 let trainTableRow = "";
 
 //moment.js time variables
@@ -46,21 +47,27 @@ function createTableData(text) {
 function timeCalc() {
     convertedTime = moment(firstTrainVal, timeFormat);
     minPast = (-1 * convertedTime.diff(moment(), "minutes"));
-    console.log(minPast);
-    minAway = frequencyVal - (minPast % frequencyVal);
-    console.log(minAway);
-    var mmtMidnight = convertedTime.clone().startOf('day');
-    var diffMinutes = convertedTime.diff(mmtMidnight, 'minutes');
-    console.log(diffMinutes);
-    nextArrivalMin = diffMinutes + minPast + minAway;
-    nextArrivalHours = Math.floor(nextArrivalMin/60);
-    nextArrivalModMin = nextArrivalMin % 60;
-    if (nextArrivalModMin < 10) {
-        nextArrivalModMin = "0" + nextArrivalModMin;
+    if(minPast < 0) {
+        nextArrival = firstTrainVal;
+        minAway = -1 * minPast;
     }
-    nextArrival = nextArrivalHours + ":" + nextArrivalModMin;
+    else {
+        var mmtMidnight = convertedTime.clone().startOf('day');
+        var diffMinutes = convertedTime.diff(mmtMidnight, 'minutes');
+        minAway = frequencyVal - (minPast % frequencyVal);
+        nextArrivalMin = diffMinutes + minPast + minAway;
+        nextArrivalHours = Math.floor(nextArrivalMin/60);
+        nextArrivalModMin = nextArrivalMin % 60;
+        if (nextArrivalModMin < 10) {
+            nextArrivalModMin = "0" + nextArrivalModMin;
+        }
+        nextArrival = nextArrivalHours + ":" + nextArrivalModMin;
+    }
+    console.log(minPast);
+    console.log(minAway);
+    console.log(diffMinutes);
 }
-// used to get values
+// Getting user input
 function getValues() {
     trainNameVal = trainNameInputDiv.val();
     destinationVal = destinationInputDiv.val();
@@ -70,12 +77,13 @@ function getValues() {
 // creates a row each time button is clicked
 function createTableRow() {
     trainTableRow = $("<tr>");
-    createTableData(trainNameVal);
-    createTableData(destinationVal);
-    createTableData(frequencyVal);
-    createTableData(nextArrival);
-    createTableData(minAway);
+    createTableData(sv.trainName);
+    createTableData(sv.destination);
+    createTableData(sv.frequency);
+    createTableData(sv.nextArrivalTime);
+    createTableData(sv.minAwayTime);
     trainTableRow.appendTo("#train-table");
+    $("<hr>").appendTo(trainTableRow);
 }
 // pushes data to firebase after each submit
 function pushToFirebase() {
@@ -92,14 +100,7 @@ function readFromFirebase() {
     database.ref().on("child_added", function(snapshot) {
         sv = snapshot.val();
         console.log(sv);
-        trainTableRow = $("<tr>");
-        createTableData(sv.trainName);
-        createTableData(sv.destination);
-        createTableData(sv.frequency);
-        createTableData(sv.nextArrivalTime);
-        createTableData(sv.minAwayTime);
-        trainTableRow.appendTo("#train-table");
-        
+        createTableRow();
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
@@ -109,7 +110,6 @@ submitButton.on("click",function(event) {
     event.preventDefault();
     getValues();
     timeCalc();
-    //createTableRow();
     pushToFirebase();
 });
 });

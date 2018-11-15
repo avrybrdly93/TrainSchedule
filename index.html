@@ -5,30 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Train</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-    <form>
-        <h4>Train Name</h4>
-        <input type="text" id="add-train-name">
-        <h4>Destination</h4>
-        <input type="text" id="add-destination">
-        <h4>First Train Time</h4>
-        <input type="text" id="add-first-train">
-        <h4>Frequency (min)</h4>
-        <input type="text" id="add-frequency">
-        <br>
-        <br>
-        <input type="submit" id="submit">
-    </form>
-    <table id="train-table">
-        <tr>        
-            <th>Train Name</th>
-            <th>Destination</th>
-            <th>Frequency (min)</th>
-            <th>Next Arrival</th>
-            <th>Minutes Away</th>
-        </tr>
-    </table>
+<body style="width:960px; margin:auto">
+
+    <div class="jumbotron">
+        <h1 class="display-4">Train Schedule</h1>
+        <p class="lead">A fully immersive experience.  Please, feel free to add a train to our train database.  All Aboard!</p>
+    </div>
+
+    <div class="card">
+        <div class="card-header text-white bg-info">
+            Current Train Schedule
+        </div>
+        <div class="card-body">
+            <table id="train-table">
+                <tr>        
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>Frequency (min)</th>
+                    <th>Next Arrival</th>
+                    <th>Minutes Away</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+            <div class="card-header text-white bg-info">
+                Add Train
+            </div>
+            <div class="card-body">
+                <form>
+                    <h5>Train Name</h5>
+                    <div class="input-group">
+                        <input type="text" id="add-train-name" class="form-control" placeholder="Polar Express" style="margin-bottom: 12px">
+                    </div>
+                    <h5>Destination</h5>
+                    <div class="input-group">
+                        <input type="text" id="add-destination" class="form-control" placeholder="North Pole" style="margin-bottom: 12px">
+                    </div>
+                    <h5>First Train Time</h5>
+                    <div class="input-group">
+                        <input type="text" id="add-first-train" class="form-control" placeholder="13:30" style="margin-bottom: 12px">
+                    </div>
+                    <h5>Frequency (min)</h5>
+                    <div class="input-group">
+                        <input type="text" id="add-frequency" class="form-control" placeholder="30" style="margin-bottom: 12px">
+                    </div>
+                    <input type="submit" class="btn btn-secondary" id="submit">
+                </form>
+            </div>
+        </div>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
