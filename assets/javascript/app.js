@@ -1,5 +1,18 @@
+
 $(document).ready(function() {
 
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyCrMbomU0SmVnN1LgBTB5cUr-5U_3ypwv0",
+    authDomain: "trainscheduledb-bad96.firebaseapp.com",
+    databaseURL: "https://trainscheduledb-bad96.firebaseio.com",
+    projectId: "trainscheduledb-bad96",
+    storageBucket: "trainscheduledb-bad96.appspot.com",
+    messagingSenderId: "931149375332"
+    };
+    firebase.initializeApp(config);
+    let database = firebase.database();
+    readFromFirebase();
 // Variables used for user input
 let trainNameInputDiv = $("#add-train-name");
 let destinationInputDiv = $("#add-destination");;
@@ -64,13 +77,40 @@ function createTableRow() {
     createTableData(minAway);
     trainTableRow.appendTo("#train-table");
 }
+// pushes data to firebase after each submit
+function pushToFirebase() {
+    database.ref().push({
+        trainName: trainNameVal,
+        destination: destinationVal,
+        frequency: frequencyVal,
+        nextArrivalTime: nextArrival,
+        minAwayTime: minAway
+    });
+    console.log("hello");
+}
+function readFromFirebase() {
+    database.ref().on("child_added", function(snapshot) {
+        sv = snapshot.val();
+        console.log(sv);
+        trainTableRow = $("<tr>");
+        createTableData(sv.trainName);
+        createTableData(sv.destination);
+        createTableData(sv.frequency);
+        createTableData(sv.nextArrivalTime);
+        createTableData(sv.minAwayTime);
+        trainTableRow.appendTo("#train-table");
+        
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+}
 // submit button function
 submitButton.on("click",function(event) {
     event.preventDefault();
     getValues();
     timeCalc();
-    createTableRow();
-
+    //createTableRow();
+    pushToFirebase();
 });
 });
 
